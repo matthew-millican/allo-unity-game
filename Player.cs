@@ -81,21 +81,33 @@ public class Player : MonoBehaviour
 
         float targetVelocityX = input.x * moveSpeed;
         currentOrder = shapeController.getCurrentOrder();
-        //if (currentOrder == 4)
-        {
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            if (doubleTapTime > Time.time && lastKeyCode == KeyCode.D)
-            {
-                isDashing = true;
-                StartCoroutine(Dash(1f));
-            }
-            else
-            {
-                doubleTapTime = Time.time + 0.3f;
-            }
-            lastKeyCode = KeyCode.D;
-        }
+        if (currentOrder == 4)
+           {
+           if (Input.GetKeyDown(KeyCode.D))
+           {
+               if (doubleTapTime > Time.time && lastKeyCode == KeyCode.D)
+               {
+                   isDashing = true;
+                   StartCoroutine(Dash(1f));
+               }
+               else
+               {
+                   doubleTapTime = Time.time + 0.3f;
+               }
+               lastKeyCode = KeyCode.D;
+           }
+           else if (Input.GetKeyDown(KeyCode.A))
+           {
+               if ((doubleTapTime > Time.time && lastKeyCode == KeyCode.A))
+               {
+                   isDashing = true;
+                   StartCoroutine(Dash(-1f));
+               }
+               else{
+                   doubleTapTime = Time.time + 0.3f;
+               }
+               lastKeyCode = KeyCode.A;
+           }
         }
         if (!isDashing)
         {
@@ -113,8 +125,8 @@ public class Player : MonoBehaviour
         isDashing = true;
         float velocityX = dashSpeed * direction;
         Debug.Log(velocityX);
-        //velocity.x = Mathf.SmoothDamp(velocity.x, velocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
         velocity.x = velocityX;
+        velocity.y = 0f;
         controller.Move(velocity * Time.deltaTime);
         yield return new WaitForSeconds(0.00002f);
         isDashing = false;
@@ -126,13 +138,33 @@ public class Player : MonoBehaviour
     {
         if (currentOrder == 1f)
         {
+            moveSpeed = 25;
             jumpHeight = 7f;
             timeToJumpApex = 0.3f;
         }
         else if (currentOrder == 2f)
         {
+            moveSpeed = 26;
             jumpHeight = 9f;
             timeToJumpApex = 0.302f;
+        }
+        else if (currentOrder == 3f)
+        {
+            moveSpeed = 24;
+            jumpHeight = 6f;
+            timeToJumpApex = 0.3f;
+        }
+        else if (currentOrder == 4f)
+        {
+            moveSpeed = 27;
+            jumpHeight = 8f;
+            timeToJumpApex = 0.3f;
+        }
+        else if (currentOrder == 5f)
+        {
+            moveSpeed = 26f;
+            jumpHeight = 9f;
+            timeToJumpApex = 0.3f;
         }
 
 
