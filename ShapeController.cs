@@ -17,6 +17,8 @@ public class ShapeController : MonoBehaviour
 
     public Sprite triangle;
 
+    public Sprite squircle;
+
     SpriteRenderer objectSprite;
 
 
@@ -28,6 +30,8 @@ public class ShapeController : MonoBehaviour
     const float thirdOrder = 3;
 
     const float fourthOrder = 4;
+
+    const float fifthOrder = 5;
 
 
     Color diamondColor = new Color(1, 0, 1, 20);
@@ -91,7 +95,7 @@ public class ShapeController : MonoBehaviour
         if (currentOrder == firstOrder)
         {
             Vector3 currentTransform = transform.localScale;
-            if (currentTransform.y < 6)
+            if (currentTransform.y < 8)
             {
                 transform.localScale += new Vector3(0, 2f * timeShiftHeld, 0);
             }
@@ -118,6 +122,17 @@ public class ShapeController : MonoBehaviour
             objectSprite.sprite = diamond;
         }
         else if (currentOrder == thirdOrder)
+        {
+            currentOrder = fourthOrder;
+            objectSprite.color = triangleColor;
+            objectSprite.sprite = triangle;
+        }
+        else if (currentOrder == fourthOrder)
+        {
+            currentOrder = fifthOrder;
+            objectSprite.sprite = squircle;
+        }
+        else if (currentOrder == fifthOrder)
         {
             currentOrder = firstOrder;
             objectSprite.color = squareColor;

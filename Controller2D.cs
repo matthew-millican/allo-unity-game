@@ -6,7 +6,6 @@ public class Controller2D : RaycastController
 
     public CollisionInfo collisions;
 
-    public LayerMask collisionMask;
     float maxAngle = 55;
 
     float maxDescendAngle = 50;
