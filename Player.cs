@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
 {
     Controller2D controller;
 
-    bool isDashing = false;
+    bool isDashing;
 
 
 
@@ -23,10 +23,10 @@ public class Player : MonoBehaviour
 
 
     float currentOrder;
-    float moveSpeed = 22;
+    public float moveSpeed = 22;
 
 
-    float dashSpeed = 800;
+    public float dashSpeed = 1000;
 
 
     public float jumpHeight;
@@ -80,13 +80,14 @@ public class Player : MonoBehaviour
 
 
         float targetVelocityX = input.x * moveSpeed;
-
-        if (currentOrder == 4)
+        currentOrder = shapeController.getCurrentOrder();
+        //if (currentOrder == 4)
         {
         if (Input.GetKeyDown(KeyCode.D))
         {
             if (doubleTapTime > Time.time && lastKeyCode == KeyCode.D)
             {
+                isDashing = true;
                 StartCoroutine(Dash(1f));
             }
             else
@@ -96,7 +97,6 @@ public class Player : MonoBehaviour
             lastKeyCode = KeyCode.D;
         }
         }
-
         if (!isDashing)
         {
            velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
@@ -112,10 +112,11 @@ public class Player : MonoBehaviour
 
         isDashing = true;
         float velocityX = dashSpeed * direction;
-        velocity.x = Mathf.SmoothDamp(velocity.x, velocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
-        velocity.y = 0f;
+        Debug.Log(velocityX);
+        //velocity.x = Mathf.SmoothDamp(velocity.x, velocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
+        velocity.x = velocityX;
         controller.Move(velocity * Time.deltaTime);
-        yield return new WaitForSeconds(0f);
+        yield return new WaitForSeconds(0.00002f);
         isDashing = false;
     }
 
