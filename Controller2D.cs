@@ -11,6 +11,7 @@ public class Controller2D : RaycastController
     float maxDescendAngle = 50;
 
 
+
     
 
     void Start()
@@ -66,6 +67,8 @@ public class Controller2D : RaycastController
 
             if (hit)
             {
+
+
                  velocity.y = (hit.distance - skinWidth) * directionY;
                  rayLength = hit.distance;
 
