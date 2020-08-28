@@ -49,6 +49,8 @@ public class ShapeController : MonoBehaviour
 
     float timeShiftHeld;
 
+    float timeHeld;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -74,11 +76,22 @@ public class ShapeController : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftControl))
         {
             timeShiftHeld += Time.deltaTime;
-            doSkill();
+            shrink();
         }
         else
         {
             timeShiftHeld = 0f;
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            timeHeld += Time.deltaTime;
+            expand();
+
+        }
+        else
+        {
+            timeHeld = 0f;
         }
     }
 
@@ -89,8 +102,21 @@ public class ShapeController : MonoBehaviour
     }
 
 
+    void expand()
+    {
+        if (currentOrder == firstOrder)
+        {
+            Vector3 currentTransform = transform.localScale;
+            if (currentTransform.y > 1)
+            {
+                transform.localScale -= new Vector3(0, 3f * timeHeld, 0);
+            }
+        }
+    }
 
-    void doSkill()
+
+
+    void shrink()
     {
         if (currentOrder == firstOrder)
         {

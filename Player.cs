@@ -36,6 +36,9 @@ public class Player : MonoBehaviour
     float accelerationTimeGrounded = 0.1f;
 
 
+    bool hasDoubleJumped;
+
+
 
     Vector3 velocity;
 
@@ -58,6 +61,11 @@ public class Player : MonoBehaviour
     void Update()
     {
 
+        if (controller.collisions.below)
+        {
+            hasDoubleJumped = true;
+        }
+
         currentOrder = shapeController.getCurrentOrder();
         getBehaviour(currentOrder);
 
@@ -69,11 +77,20 @@ public class Player : MonoBehaviour
 
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
+
+        Debug.Log(hasDoubleJumped);
+        if (((Input.GetKeyDown(KeyCode.W) && currentOrder == 2 && !hasDoubleJumped)) || (Input.GetKeyDown(KeyCode.UpArrow) && currentOrder == 2 && !hasDoubleJumped))
+        {
+            hasDoubleJumped = true;
+            velocity.y = jumpVelocity;
+        }
+
         if ((Input.GetKey(KeyCode.W) && controller.collisions.below) || (Input.GetKey(KeyCode.UpArrow) && controller.collisions.below))
         {
             if (currentOrder != 3)
             {
                 velocity.y = jumpVelocity;
+                hasDoubleJumped = false;
             }
         }
 
@@ -144,8 +161,8 @@ public class Player : MonoBehaviour
         }
         else if (currentOrder == 2f)
         {
-            moveSpeed = 26;
-            jumpHeight = 9f;
+            moveSpeed = 27f;
+            jumpHeight = 11f;
             timeToJumpApex = 0.302f;
         }
         else if (currentOrder == 3f)
