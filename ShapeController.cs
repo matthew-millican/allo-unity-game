@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class ShapeController : MonoBehaviour
 {
+
 
 
 
@@ -25,6 +25,7 @@ public class ShapeController : MonoBehaviour
 
 
 
+
     const float firstOrder = 1;
     const float secondOrder = 2;
     const float thirdOrder = 3;
@@ -34,12 +35,12 @@ public class ShapeController : MonoBehaviour
     const float fifthOrder = 5;
 
 
-    Color diamondColor = new Color(1, 0, 1, 20);
-    Color squareColor = Color.red;
+    Color diamondColor = new Color(1, 1, 1, 1);
+    Color squareColor = new Color(1, 0, 0, 1f);
 
-    Color circleColor = Color.blue;
+    Color circleColor = new Color(0f, 0f, 1, 1);
 
-    Color triangleColor = Color.green;
+    Color triangleColor = new Color(0.9f, 1f, 0.9f, 1);
 
 
     
@@ -59,6 +60,9 @@ public class ShapeController : MonoBehaviour
         currentOrder = firstOrder;
 
         objectSprite = gameObject.GetComponent<SpriteRenderer>();
+
+
+        objectSprite.color = squareColor;
         
     }
 
@@ -67,7 +71,7 @@ public class ShapeController : MonoBehaviour
     {
 
 
-        if (Input.GetKeyDown("c"))
+        if (Input.GetKeyDown("e"))
         {
             changeSprite();
         }
@@ -140,29 +144,35 @@ public class ShapeController : MonoBehaviour
             currentOrder = secondOrder;
             objectSprite.color = circleColor;
             objectSprite.sprite = circle;
+            //controller.setLayerMask(collisionsLayers[3]);
         }
         else if (currentOrder == secondOrder)
         {
             currentOrder = thirdOrder;
             objectSprite.color = diamondColor;
             objectSprite.sprite = diamond;
+            //controller.setLayerMask(collisionsLayers[3]);
         }
         else if (currentOrder == thirdOrder)
         {
             currentOrder = fourthOrder;
-            objectSprite.color = triangleColor;
+            objectSprite.color = new Color(1, 1, 1, 1);
             objectSprite.sprite = triangle;
+            //controller.setLayerMask(collisionsLayers[3]);
         }
         else if (currentOrder == fourthOrder)
         {
             currentOrder = fifthOrder;
             objectSprite.sprite = squircle;
+            objectSprite.color = new Color(1, 1, 1, 1);
+            //controller.setLayerMask(collisionsLayers[3]);
         }
         else if (currentOrder == fifthOrder)
         {
             currentOrder = firstOrder;
             objectSprite.color = squareColor;
             objectSprite.sprite = square;
+            //controller.setLayerMask(collisionsLayers[3]);
         }
     }
 }

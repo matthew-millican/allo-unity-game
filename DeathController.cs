@@ -23,7 +23,6 @@ public class DeathController : MonoBehaviour
     {
 
 
-        getColors();
         
     }
 }

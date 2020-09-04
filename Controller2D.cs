@@ -1,43 +1,66 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+[RequireComponent (typeof(ShapeController))]
 public class Controller2D : RaycastController
 {
 
     public CollisionInfo collisions;
 
+      public PlatformController platform;
+
+
+    Vector2 playerInput;
+
     float maxAngle = 55;
 
     float maxDescendAngle = 50;
+
+    ShapeController shapeController;
 
 
 
     
 
-    void Start()
+    public override void Start()
     {
-        collider2D = GetComponent<BoxCollider2D>();
-        CalculateRaySpacing();
-        
+
+        base.Start ();
+        collisions.faceDir = 1;
+
+        shapeController = gameObject.GetComponent<ShapeController>();
     }
 
 
-    public void Move(Vector3 velocity)
+    public void Move(Vector3 velocity, bool standingOnPlatform)
+    {
+        Move (velocity, Vector2.zero, standingOnPlatform);
+    }
+
+
+
+    public void Move(Vector3 velocity, Vector2 input, bool standingOnPlatform = false)
     {
         collisions.Reset();
          UpdateRaycastOrigins();
 
          collisions.velocityOld = velocity;
 
+
+         playerInput = input;
+
+         if (velocity.x != 0)
+         {
+             collisions.faceDir = (int) Mathf.Sign(velocity.x);
+         }
+
          if (velocity.y < 0)
          {
              DescendSlope(ref velocity);
          }
 
-         if (velocity.x != 0)
-         {
-             HorizontalCollisions(ref velocity);
-         }
+        HorizontalCollisions(ref velocity);
 
 
          if (velocity.y != 0)
@@ -50,6 +73,11 @@ public class Controller2D : RaycastController
 
 
         transform.Translate(velocity);
+
+        if (standingOnPlatform)
+        {
+            collisions.below = true;
+        }
     }
 
 
@@ -68,6 +96,39 @@ public class Controller2D : RaycastController
             if (hit)
             {
 
+
+
+                if (hit.collider.tag == "WhitePlatform" || hit.collider.tag == "MovingPlatform")
+                {
+                    if (directionY == 1 || hit.distance == 0)
+                    {
+                        continue;
+                    }
+
+                    if (hit.collider == collisions.fallingThroughPlatform)
+                    {
+                        continue;
+                    }
+                    if (playerInput.y == -1)
+                    {
+                        if (hit.collider.tag == "MovingPlatform")
+                        {
+                            Debug.Log(platform.platformDirectionY);
+                            if (platform.platformDirectionY == -1)
+                            {
+                                collisions.fallingThroughPlatform = hit.collider;
+                                continue;
+                            }
+                        }
+                        else
+                        {
+                            collisions.fallingThroughPlatform = hit.collider;
+                            continue;
+                        }
+                    }
+                }
+                collisions.fallingThroughPlatform = new Collider2D();
+                 bool alive = getColor(hit.transform.gameObject);
 
                  velocity.y = (hit.distance - skinWidth) * directionY;
                  rayLength = hit.distance;
@@ -104,11 +165,79 @@ public class Controller2D : RaycastController
     }
 
 
+    bool getColor(GameObject gameObject)
+    {
+
+        float currentOrder = shapeController.getCurrentOrder();
+        Color currentColor = gameObject.GetComponent<Renderer>().material.color;
+        if (currentColor == new Color(1, 1, 1, 1))
+        {
+            //No death
+            return true;
+        }
+        else
+        {
+            Color shapeColor = new Color(0, 0, 0, 0);
+
+            if (currentOrder == 1)
+            {
+                shapeColor = new Color(1, 0, 0, 1);
+            }
+            else if (currentOrder == 2)
+            {
+                shapeColor = new Color(0f, 0f, 1, 1);
+            }
+            else if (currentOrder == 3)
+            {
+                shapeColor = new Color(1, 1, 1, 1);
+            }
+            else if (currentOrder == 4)
+            {
+                if (currentColor != new Color(0, 1, 0, 1))
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else if (currentOrder == 5)
+            {
+                if (currentColor != new Color(1, 1, 0, 1))
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+
+            if (shapeColor != currentColor)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+    }
+
+
     void HorizontalCollisions(ref Vector3 velocity)
     {
 
-        float directionX = Mathf.Sign(velocity.x);
+        float directionX = collisions.faceDir;
         float rayLength = Mathf.Abs(velocity.x) + skinWidth;
+
+
+        if (Mathf.Abs(velocity.x) < skinWidth)
+        {
+            rayLength = 2 * skinWidth;
+        }
         for (int i = 0; i < horizontalRayCount; i++)
         {
             Vector2 rayOrigin = (directionX == -1)?raycastOrigins.bottomLeft:raycastOrigins.bottomRight;
@@ -118,6 +247,13 @@ public class Controller2D : RaycastController
 
             if (hit)
             {
+
+                bool alive = getColor(hit.transform.gameObject);
+
+                if (hit.distance == 0)
+                {
+                    continue;
+                }
 
                 float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
 
@@ -212,6 +348,11 @@ public class Controller2D : RaycastController
         public float slopeAngle, slopeAngleOld;
 
         public Vector3 velocityOld;
+        
+        public int faceDir;
+
+
+        public Collider2D fallingThroughPlatform;
         public void Reset()
         {
             above = below = false;
@@ -222,5 +363,7 @@ public class Controller2D : RaycastController
             slopeAngle = 0;
             descendingSlope = false;
         }
+
+
     }
 }

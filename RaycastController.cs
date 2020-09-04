@@ -30,6 +30,24 @@ public class RaycastController : MonoBehaviour
         public Vector2 bottomLeft, bottomRight;
     }
 
+
+
+
+    public void setLayerMask(LayerMask collisionLayer)
+    {
+        collisionMask = collisionLayer;
+    }
+
+
+
+
+       public virtual void Start()
+    {
+        collider2D = GetComponent<BoxCollider2D>();
+        CalculateRaySpacing();
+        
+    }
+
     public void UpdateRaycastOrigins() {
         Bounds bounds = collider2D.bounds;
         bounds.Expand (skinWidth * -2);
