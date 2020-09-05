@@ -227,6 +227,7 @@ public class Player : MonoBehaviour
 
         }
 
+
         if (controller.collisions.above || controller.collisions.below)
         {
             velocity.y = 0;

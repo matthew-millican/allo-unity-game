@@ -109,16 +109,13 @@ public class Controller2D : RaycastController
                     {
                         continue;
                     }
-                    if (playerInput.y == -1)
+                    if (Mathf.Sign(playerInput.y) == -1)
                     {
                         if (hit.collider.tag == "MovingPlatform")
                         {
                             Debug.Log(platform.platformDirectionY);
-                            if (platform.platformDirectionY == -1)
-                            {
                                 collisions.fallingThroughPlatform = hit.collider;
                                 continue;
-                            }
                         }
                         else
                         {
