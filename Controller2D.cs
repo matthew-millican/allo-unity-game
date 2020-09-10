@@ -21,6 +21,12 @@ public class Controller2D : RaycastController
 
 
 
+    bool alive;
+
+
+
+
+
     
 
     public override void Start()
@@ -30,6 +36,8 @@ public class Controller2D : RaycastController
         collisions.faceDir = 1;
 
         shapeController = gameObject.GetComponent<ShapeController>();
+
+        alive = true;
     }
 
 
@@ -125,7 +133,8 @@ public class Controller2D : RaycastController
                     }
                 }
                 collisions.fallingThroughPlatform = new Collider2D();
-                 bool alive = getColor(hit.transform.gameObject);
+                 alive = getColor(hit.transform.gameObject);
+
 
                  velocity.y = (hit.distance - skinWidth) * directionY;
                  rayLength = hit.distance;
@@ -224,6 +233,12 @@ public class Controller2D : RaycastController
     }
 
 
+    public bool getAliveState()
+    {
+        return alive;
+    }
+
+
     void HorizontalCollisions(ref Vector3 velocity)
     {
 
@@ -244,8 +259,7 @@ public class Controller2D : RaycastController
 
             if (hit)
             {
-
-                bool alive = getColor(hit.transform.gameObject);
+                alive = getColor(hit.transform.gameObject);
 
                 if (hit.distance == 0)
                 {

@@ -134,10 +134,41 @@ public class ShapeController : MonoBehaviour
 
 
 
+    public void ReloadSprite()
+    {
+        if (currentOrder == firstOrder)
+        {
+            objectSprite.color = squareColor;
+            objectSprite.sprite = square;
+        }
+        else if (currentOrder == secondOrder)
+        {
+            objectSprite.color = circleColor;
+            objectSprite.sprite = circle;
+        }
+        else if (currentOrder == thirdOrder)
+        {
+            objectSprite.color = diamondColor;
+            objectSprite.sprite = diamond;
+        }
+        else if (currentOrder == fourthOrder)
+        {
+            objectSprite.sprite = triangle;
+            objectSprite.color = new Color(1, 1, 1, 1);
+        }
+        else if (currentOrder == fifthOrder)
+        {
+            objectSprite.color = new Color(1, 1, 1, 1);
+            objectSprite.sprite = squircle;
+        }
+    }
+
+
+
 
     void changeSprite()
     {
-
+        Debug.Log(currentOrder);
         transform.localScale = new Vector3(3, 3, 3);
         if (currentOrder == firstOrder)
         {

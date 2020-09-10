@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 [RequireComponent (typeof (Controller2D))]
 [RequireComponent (typeof (ShapeController))]
+[RequireComponent (typeof(DeathController))]
 public class Player : MonoBehaviour
 {
     Controller2D controller;
@@ -12,6 +13,7 @@ public class Player : MonoBehaviour
 
 
     ShapeController shapeController;
+DeathController deathControl;
 
 
     public float doubleTapTime;
@@ -71,6 +73,7 @@ public class Player : MonoBehaviour
 
         shapeController = GetComponent<ShapeController>();
         controller = GetComponent<Controller2D>();
+        deathControl = GetComponent<DeathController>();
         currentOrder = shapeController.getCurrentOrder();
 
         gravity = -(2 * jumpHeight)/Mathf.Pow(timeToJumpApex, 2);
@@ -83,6 +86,16 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+
+        bool alive = controller.getAliveState();
+
+        bool respawned = deathControl.HasRespawned();
+
+
+        if ((!alive && !respawned) || transform.position.y <-200)
+        {
+            deathControl.Die(gameObject.transform);
+        }
          Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
          int wallDirX = (controller.collisions.left) ? -1 : 1;
 
