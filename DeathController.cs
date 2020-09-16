@@ -92,7 +92,7 @@ public class DeathController : MonoBehaviour
             Instantiate(DeathParticles, currentPosition.position, Quaternion.identity);
         }
         renderer.sprite = null;
-        coroutine = Wait(0.3f);
+        coroutine = Wait(1f);
         StartCoroutine (coroutine);
         respawned = true;
 

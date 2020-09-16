@@ -105,6 +105,20 @@ public class Controller2D : RaycastController
             {
 
 
+                if (hit.collider.tag == "Achievement")
+                {
+                    GameObject obj = hit.transform.gameObject;
+                    AchievementController achievement = obj.GetComponent<AchievementController>();
+
+                    achievement.collected();
+                    
+
+                }
+                else
+                {
+
+
+
 
                 if (hit.collider.tag == "WhitePlatform" || hit.collider.tag == "MovingPlatform")
                 {
@@ -121,7 +135,6 @@ public class Controller2D : RaycastController
                     {
                         if (hit.collider.tag == "MovingPlatform")
                         {
-                            Debug.Log(platform.platformDirectionY);
                                 collisions.fallingThroughPlatform = hit.collider;
                                 continue;
                         }
@@ -147,6 +160,7 @@ public class Controller2D : RaycastController
 
                    collisions.below = directionY == -1;
                  collisions.above = directionY == 1;
+            }
             }
         }
 
@@ -259,6 +273,21 @@ public class Controller2D : RaycastController
 
             if (hit)
             {
+
+
+
+
+                if (hit.collider.tag == "Achievement")
+                {
+                    GameObject obj = hit.transform.gameObject;
+                    AchievementController achievement = obj.GetComponent<AchievementController>();
+
+                    achievement.collected();
+                    
+
+                }
+                else
+                {
                 alive = getColor(hit.transform.gameObject);
 
                 if (hit.distance == 0)
@@ -299,6 +328,7 @@ public class Controller2D : RaycastController
                      collisions.left = directionX == -1;
                      collisions.right = directionX == 1;
                 }
+            }
             }
         }
     }
