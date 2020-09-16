@@ -1,11 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+[RequireComponent (typeof(ShapeController))]
 public class DeathController : MonoBehaviour
 {
 
 
-    public Transform respawnPoint;
+    public Transform[] respawnPoints;
+
+
+    Transform currentRespawnPoint;
 
 
     SpriteRenderer renderer;
@@ -26,6 +31,12 @@ public class DeathController : MonoBehaviour
     private IEnumerator coroutine;
 
 
+    List<Transform> passedCheckpoints = new List<Transform>();
+
+
+    public StatController statController;
+
+
 
     void Start()
     {
@@ -38,13 +49,41 @@ public class DeathController : MonoBehaviour
 
     void Update()
     {
+
+
+        GetRespawnPoint();
         Reset();
+    }
+
+
+
+    void GetRespawnPoint()
+    {
+
+        for (int i = 0; i < respawnPoints.Length; i++)
+        {
+
+            Debug.Log(respawnPoints[i].position.x);
+
+            if (respawnPoints[i].position.x <= gameObject.transform.position.x && !passedCheckpoints.Contains(respawnPoints[i]))
+            {
+                currentRespawnPoint = respawnPoints[i];
+                if (i > 0)
+                {
+                    passedCheckpoints.Add(respawnPoints[i-1]);
+                }
+
+                
+            }
+        }
     }
 
 
 
     public void Die(Transform currentPosition)
     {
+
+        shapeController.setDeath(true);
 
         respawned = false;
 
@@ -53,9 +92,11 @@ public class DeathController : MonoBehaviour
             Instantiate(DeathParticles, currentPosition.position, Quaternion.identity);
         }
         renderer.sprite = null;
-        coroutine = Wait(0.5f);
+        coroutine = Wait(0.3f);
         StartCoroutine (coroutine);
         respawned = true;
+
+
         //gameObject.transform.position = respawnPoint.position;
     }
     void Reset()
@@ -71,9 +112,11 @@ public class DeathController : MonoBehaviour
     public IEnumerator Wait(float time)
     {
         yield return new WaitForSeconds(time);
-        gameObject.transform.position = respawnPoint.position;
+        gameObject.transform.position = currentRespawnPoint.position;
         shapeController.ReloadSprite();
+        statController.isKilled();
         respawned = true;
+        shapeController.setDeath(false);
     }
 
 

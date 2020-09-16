@@ -174,7 +174,7 @@ public class Controller2D : RaycastController
     bool getColor(GameObject gameObject)
     {
 
-        float currentOrder = shapeController.getCurrentOrder();
+        int behaviour = shapeController.Behaviour();
         Color currentColor = gameObject.GetComponent<Renderer>().material.color;
         if (currentColor == new Color(1, 1, 1, 1))
         {
@@ -185,19 +185,19 @@ public class Controller2D : RaycastController
         {
             Color shapeColor = new Color(0, 0, 0, 0);
 
-            if (currentOrder == 1)
+            if (behaviour == 1)
             {
                 shapeColor = new Color(1, 0, 0, 1);
             }
-            else if (currentOrder == 2)
+            else if (behaviour == 2)
             {
                 shapeColor = new Color(0f, 0f, 1, 1);
             }
-            else if (currentOrder == 3)
+            else if (behaviour == 3)
             {
-                shapeColor = new Color(1, 1, 1, 1);
+                shapeColor = new Color(0, 1, 0, 1);
             }
-            else if (currentOrder == 4)
+            else if (behaviour == 4)
             {
                 if (currentColor != new Color(0, 1, 0, 1))
                 {
@@ -208,7 +208,7 @@ public class Controller2D : RaycastController
                     return true;
                 }
             }
-            else if (currentOrder == 5)
+            else if (behaviour == 5)
             {
                 if (currentColor != new Color(1, 1, 0, 1))
                 {

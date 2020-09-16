@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
 
 
     ShapeController shapeController;
-DeathController deathControl;
+    DeathController deathControl;
 
 
     public float doubleTapTime;
@@ -68,6 +68,8 @@ DeathController deathControl;
     float minJumpVelocity;
 
     float velocityXSmoothing;
+
+    int behaviour;
     void Start()
     {
 
@@ -87,9 +89,13 @@ DeathController deathControl;
     void Update()
     {
 
+        behaviour = shapeController.Behaviour();
+
         bool alive = controller.getAliveState();
 
         bool respawned = deathControl.HasRespawned();
+
+
 
 
         if ((!alive && !respawned) || transform.position.y <-200)
@@ -105,7 +111,7 @@ DeathController deathControl;
         velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
 
 
-        if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0 && (currentOrder == 1 || currentOrder == 5))
+        if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0 && (behaviour == 1 || behaviour == 5))
         {
             wallSliding = true;
 
@@ -140,11 +146,10 @@ DeathController deathControl;
             hasDoubleJumped = true;
         }
 
-        currentOrder = shapeController.getCurrentOrder();
-        getBehaviour(currentOrder);
+        getBehaviour(behaviour);
 
 
-        if ((Input.GetKey(KeyCode.W) && currentOrder == 3))
+        if ((Input.GetKey(KeyCode.W) && behaviour == 4))
         {
             isFlying = true;
             velocity.y = jumpVelocity;
@@ -154,7 +159,7 @@ DeathController deathControl;
         {
 
 
-        if (((Input.GetKeyDown(KeyCode.W) && (currentOrder == 2 || currentOrder == 5) && !hasDoubleJumped)) || (Input.GetKeyDown(KeyCode.UpArrow) && (currentOrder == 2 || currentOrder == 5) && !hasDoubleJumped))
+        if (((Input.GetKeyDown(KeyCode.W) && (behaviour == 2 || behaviour == 5) && !hasDoubleJumped)) || (Input.GetKeyDown(KeyCode.UpArrow) && (behaviour == 2 || behaviour == 5) && !hasDoubleJumped))
         {
             hasDoubleJumped = true;
             velocity.y = jumpVelocity;
@@ -163,9 +168,9 @@ DeathController deathControl;
 
         if ((Input.GetKey(KeyCode.W)) || (Input.GetKey(KeyCode.UpArrow)))
         {
-            if (currentOrder != 3)
+            if (behaviour != 4)
             {
-                if (wallSliding && (currentOrder == 1 || currentOrder == 5))
+                if (wallSliding && (behaviour == 1 || behaviour == 5))
                 {
                     if (wallDirX == input.x)
                     {
@@ -203,9 +208,7 @@ DeathController deathControl;
         }
 
 
-
-        currentOrder = shapeController.getCurrentOrder();
-        if (currentOrder == 4)
+        if (behaviour == 3)
            {
            if (Input.GetKeyDown(KeyCode.D))
            {
@@ -280,21 +283,9 @@ DeathController deathControl;
         }
         else if (currentOrder == 3f)
         {
-            moveSpeed = 24;
-            jumpHeight = 4f;
-            timeToJumpApex = 0.25f;
-        }
-        else if (currentOrder == 4f)
-        {
-            moveSpeed = 35f;
-            jumpHeight = 10f;
+            moveSpeed = 34;
+            jumpHeight = 14f;
             timeToJumpApex = 0.4f;
-        }
-        else if (currentOrder == 5f)
-        {
-            moveSpeed = 28f;
-            jumpHeight = 17f;
-            timeToJumpApex = 0.5f;
         }
 
 
