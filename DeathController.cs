@@ -3,8 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent (typeof(ShapeController))]
+[RequireComponent (typeof(Player))]
 public class DeathController : MonoBehaviour
 {
+
+
+
+    List<Vector3> positions;
+
+
+    Player playerController;
 
 
     public Transform[] respawnPoints;
@@ -37,12 +45,18 @@ public class DeathController : MonoBehaviour
     public StatController statController;
 
 
+    public AudioSource death;
+
+
+
 
     void Start()
     {
         renderer = GetComponent<SpriteRenderer>();
         respawned = false;
         shapeController = GetComponent<ShapeController>();
+        positions = new List<Vector3>();
+        playerController = GetComponent<Player>();
 
     }
 
@@ -57,13 +71,17 @@ public class DeathController : MonoBehaviour
 
 
 
+
+
+
     void GetRespawnPoint()
     {
+
 
         for (int i = 0; i < respawnPoints.Length; i++)
         {
 
-            Debug.Log(respawnPoints[i].position.x);
+
 
             if (respawnPoints[i].position.x <= gameObject.transform.position.x && !passedCheckpoints.Contains(respawnPoints[i]))
             {
@@ -83,6 +101,12 @@ public class DeathController : MonoBehaviour
     public void Die(Transform currentPosition)
     {
 
+
+
+
+   
+
+
         shapeController.setDeath(true);
 
         respawned = false;
@@ -91,14 +115,21 @@ public class DeathController : MonoBehaviour
         {
             Instantiate(DeathParticles, currentPosition.position, Quaternion.identity);
         }
+
+        if (!death.isPlaying) {
+            death.Play();
+        }
+
         renderer.sprite = null;
-        coroutine = Wait(1f);
+        coroutine = Wait(0.4f);
         StartCoroutine (coroutine);
         respawned = true;
-
+        }
 
         //gameObject.transform.position = respawnPoint.position;
-    }
+
+
+
     void Reset()
     {
         counter -= Time.deltaTime;

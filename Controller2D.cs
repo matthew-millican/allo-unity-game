@@ -27,6 +27,8 @@ public class Controller2D : RaycastController
 
 
 
+
+
     
 
     public override void Start()
@@ -36,7 +38,6 @@ public class Controller2D : RaycastController
         collisions.faceDir = 1;
 
         shapeController = gameObject.GetComponent<ShapeController>();
-
         alive = true;
     }
 
@@ -189,6 +190,8 @@ public class Controller2D : RaycastController
     {
 
         int behaviour = shapeController.Behaviour();
+
+        float H, S, V;
         Color currentColor = gameObject.GetComponent<Renderer>().material.color;
         if (currentColor == new Color(1, 1, 1, 1))
         {
@@ -213,7 +216,7 @@ public class Controller2D : RaycastController
             }
             else if (behaviour == 4)
             {
-                if (currentColor != new Color(0, 1, 0, 1))
+                if (currentColor != new Color(1, 0, 1, 1))
                 {
                     return false;
                 }
@@ -249,6 +252,7 @@ public class Controller2D : RaycastController
 
     public bool getAliveState()
     {
+
         return alive;
     }
 

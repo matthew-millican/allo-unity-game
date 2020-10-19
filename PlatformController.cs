@@ -232,7 +232,6 @@ public class PlatformController : RaycastController
                    if (hit && hit.distance != 0)
                    {
 
-                       Debug.Log(hit.distance);
 
                        if (!movedPassengers.Contains(hit.transform))
                        {

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class OrderMenu : MonoBehaviour
 {
+
+
+    Player playerScript;
 
 
     public Sprite squareSprite;
@@ -53,10 +55,14 @@ public class OrderMenu : MonoBehaviour
 
     public GameObject pauseMenuUI;
 
+    public bool active;
+
 
     void Start()
     {
         shapeController = player.GetComponent<ShapeController>();
+
+        playerScript = player.GetComponent<Player>(); 
     }
 
 
@@ -84,9 +90,10 @@ public class OrderMenu : MonoBehaviour
     {
 
 
-        currentOrder = shapeController.getCurrentOrder();
+        if (active) {
 
-        Debug.Log(currentOrder);
+
+        currentOrder = shapeController.getCurrentOrder();
 
         BackgroundImage1.enabled = currentOrder == 1;
         BackgroundImage2.enabled = currentOrder == 2;
@@ -115,6 +122,7 @@ public class OrderMenu : MonoBehaviour
         {
             Resume();
         }
+        }
     }
 
     void Pause()
@@ -127,7 +135,7 @@ public class OrderMenu : MonoBehaviour
     void Resume()
     {
         pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
+        Time.timeScale = playerScript.GetActiveTimeScale();
         paused = false; 
 
     }

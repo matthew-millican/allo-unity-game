@@ -69,7 +69,18 @@ public class Player : MonoBehaviour
 
     float velocityXSmoothing;
 
+
+
     int behaviour;
+
+
+    bool control;
+
+    float timeScale;
+
+
+    
+
     void Start()
     {
 
@@ -84,26 +95,57 @@ public class Player : MonoBehaviour
 
         minJumpVelocity = Mathf.Sqrt(2*Mathf.Abs(gravity) * minJumpHeight);
 
+        control = true;
+
+        timeScale = 1f;
+
+    }
+
+
+    public void SetTimeScale(float time) {
+        timeScale = time;
+    }
+
+
+
+    public void Disable() {
+        control = false;
+    }
+
+
+    public void Enable() {
+        control = true;
+    }
+
+
+    public float GetActiveTimeScale() {
+        return timeScale;
     }
 
     void Update()
     {
 
+        Time.timeScale = timeScale;
+
+
         behaviour = shapeController.Behaviour();
 
         bool alive = controller.getAliveState();
+    
 
         bool respawned = deathControl.HasRespawned();
 
 
 
 
-        if ((!alive && !respawned) || transform.position.y <-200)
+        if ((!alive && !respawned) || transform.position.y <-500)
         {
             deathControl.Die(gameObject.transform);
         }
-         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-         int wallDirX = (controller.collisions.left) ? -1 : 1;
+        Debug.Log(control);
+        if (control) {
+           Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+           int wallDirX = (controller.collisions.left) ? -1 : 1;
 
         bool wallSliding = false;
 
@@ -111,7 +153,7 @@ public class Player : MonoBehaviour
         velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
 
 
-        if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0 && (behaviour == 1 || behaviour == 5))
+        if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below && velocity.y < 0 && (behaviour == 1 || behaviour == 4))
         {
             wallSliding = true;
 
@@ -120,6 +162,8 @@ public class Player : MonoBehaviour
             {
                 velocity.y = -wallSpeedSlideMax;
             }
+
+            
 
             if (timeToWallUnstick > 0)
             {
@@ -148,8 +192,10 @@ public class Player : MonoBehaviour
 
         getBehaviour(behaviour);
 
+        Debug.Log(behaviour);
 
-        if ((Input.GetKey(KeyCode.W) && behaviour == 4))
+
+        if ((Input.GetKey(KeyCode.W) && behaviour == 5))
         {
             isFlying = true;
             velocity.y = jumpVelocity;
@@ -159,7 +205,7 @@ public class Player : MonoBehaviour
         {
 
 
-        if (((Input.GetKeyDown(KeyCode.W) && (behaviour == 2 || behaviour == 5) && !hasDoubleJumped)) || (Input.GetKeyDown(KeyCode.UpArrow) && (behaviour == 2 || behaviour == 5) && !hasDoubleJumped))
+        if (((Input.GetKeyDown(KeyCode.W) && (behaviour == 2 || behaviour == 4) && !hasDoubleJumped)) || (Input.GetKeyDown(KeyCode.UpArrow) && (behaviour == 2 || behaviour == 4) && !hasDoubleJumped))
         {
             hasDoubleJumped = true;
             velocity.y = jumpVelocity;
@@ -168,9 +214,9 @@ public class Player : MonoBehaviour
 
         if ((Input.GetKey(KeyCode.W)) || (Input.GetKey(KeyCode.UpArrow)))
         {
-            if (behaviour != 4)
+            if (behaviour != 5)
             {
-                if (wallSliding && (behaviour == 1 || behaviour == 5))
+                if (wallSliding && (behaviour == 1 || behaviour == 4))
                 {
                     if (wallDirX == input.x)
                     {
@@ -248,6 +294,7 @@ public class Player : MonoBehaviour
         {
             velocity.y = 0;
         }
+        }
     }
 
 
@@ -257,7 +304,6 @@ public class Player : MonoBehaviour
 
         isDashing = true;
         float velocityX = dashSpeed * direction;
-        Debug.Log(velocityX);
         velocity.x = velocityX;
         velocity.y = 0f;
         controller.Move(velocity * Time.deltaTime, Vector2.zero);
@@ -287,7 +333,12 @@ public class Player : MonoBehaviour
             jumpHeight = 14f;
             timeToJumpApex = 0.4f;
         }
-
+        else if (currentOrder == 4f)
+        {
+            moveSpeed = 28f;
+            jumpHeight = 17f;
+            timeToJumpApex= 0.55f;
+        }
 
         gravity = -(2 * jumpHeight)/Mathf.Pow(timeToJumpApex, 2);
         jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;

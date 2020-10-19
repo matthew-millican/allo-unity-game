@@ -6,17 +6,34 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
 
+
+    public AudioSource click;
+
+    public AudioSource backgroundMusic;
+
+
+
+
+    void Awake() {
+        DontDestroyOnLoad(click);
+        DontDestroyOnLoad(backgroundMusic);
+    }
+
     public void PlayGame ()
     {
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+
+        click.Play();
+        SceneManager.LoadScene("LoadMenu");
+
+
 
     }
 
 
     public void QuitGame ()
     {
-        Debug.Log("Quit");
+        click.Play();
         Application.Quit();
     }
 }

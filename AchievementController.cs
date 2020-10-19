@@ -51,6 +51,7 @@ public class AchievementController : MonoBehaviour
         if (counter >= timer)
         {
             Instantiate (DeathParticles, gameObject.transform.position, Quaternion.identity);
+            counter = 0;
         }
         renderer.sprite = null;
         isCollected = false;

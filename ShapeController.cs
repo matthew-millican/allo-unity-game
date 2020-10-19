@@ -32,6 +32,8 @@ public class ShapeController : MonoBehaviour
 
     OrderMenu canvasController;
 
+    NewOrderMenu newCanvas;
+
 
 
     Sprite firstSprite;
@@ -41,6 +43,8 @@ public class ShapeController : MonoBehaviour
 
     Sprite thirdSprite;
 
+    Sprite fourthSprite;
+
 
 
     Color firstColor;
@@ -48,6 +52,8 @@ public class ShapeController : MonoBehaviour
     Color secondColor;
 
     Color thirdColor;
+
+    Color fourthColor;
 
 
 
@@ -89,11 +95,13 @@ public class ShapeController : MonoBehaviour
 
 
     bool dead;
+
+    public bool squircleUnlocked;
     // Start is called before the first frame update
     void Start()
     {
-
         canvasController = canvas.GetComponent<OrderMenu>();
+        newCanvas = canvas.GetComponent<NewOrderMenu>();
 
 
         currentOrder = firstOrder;
@@ -104,6 +112,8 @@ public class ShapeController : MonoBehaviour
         objectSprite.color = squareColor;
 
         dead = false;
+
+        //squircleUnlocked = false;
         
     }
 
@@ -141,8 +151,12 @@ public class ShapeController : MonoBehaviour
         {
             return 2;
         }
-        
-        return 3;
+        if (objectSprite.sprite == triangle) 
+        {
+            return 3;
+        }
+
+        return 4;
     }
 
 
@@ -152,13 +166,28 @@ public class ShapeController : MonoBehaviour
         Sprite currentSprite = objectSprite.sprite;
 
 
-        Image Image1 = canvasController.GetImage(1);
-        Image Image2 = canvasController.GetImage(2);
-        Image Image3 = canvasController.GetImage(3);
-
+        Image Image1;
+        Image Image2;
+        Image Image3;
+        Image Image4;
+        if (!squircleUnlocked) {
+        Image1 = canvasController.GetImage(1);
+        Image2 = canvasController.GetImage(2);
+        Image3 = canvasController.GetImage(3);
         checkFirstImageSprite(Image1);
         checkSecondImageSprite(Image2);
         checkThirdImageSprite(Image3);
+        }
+        else if (squircleUnlocked) {
+            Image1 = newCanvas.GetImage(1);
+            Image2 = newCanvas.GetImage(2);
+            Image3 = newCanvas.GetImage(3);
+            Image4 = newCanvas.GetImage(4);
+            checkFirstImageSprite(Image1);
+            checkSecondImageSprite(Image2);
+            checkThirdImageSprite(Image3);
+            checkFourthImageSprite(Image4);
+        }
 
         if (!dead)
         {
@@ -166,6 +195,11 @@ public class ShapeController : MonoBehaviour
         }
 
 
+    }
+
+
+    public void setOrder(float order) {
+        currentOrder = order;
     }
 
     void checkFirstImageSprite(Image image)
@@ -185,6 +219,10 @@ public class ShapeController : MonoBehaviour
         {
             firstSprite = circle;
             firstColor = circleColor;
+        }
+        else if (image.sprite == squircle) {
+            firstSprite = squircle;
+            firstColor = triangleColor;
         }
 
     }
@@ -206,6 +244,10 @@ public class ShapeController : MonoBehaviour
         {
             secondSprite = circle;
             secondColor = circleColor;
+        }
+        else if (image.sprite == squircle) {
+            secondSprite = squircle;
+            secondColor = triangleColor;
         }
 
     }
@@ -229,8 +271,39 @@ public class ShapeController : MonoBehaviour
             thirdSprite = circle;
             thirdColor = circleColor;
         }
+        else if (image.sprite == squircle) {
+            thirdSprite = squircle;
+            thirdColor = triangleColor;
+        }
 
     }
+
+    
+    void checkFourthImageSprite(Image image)
+    {
+
+        if (image.sprite == triangle)
+        {
+            fourthSprite = triangle;
+            fourthColor = triangleColor;
+        }
+        else if (image.sprite == menuSquare)
+        {
+            fourthSprite = square;
+            fourthColor = squareColor;
+        }
+        else if (image.sprite == menuCircle)
+        {
+            fourthSprite = circle;
+            fourthColor = circleColor;
+        }
+        else if (image.sprite == squircle) {
+            fourthSprite = squircle;
+            fourthColor = triangleColor;
+        }
+
+    }
+
 
 
 
@@ -262,6 +335,18 @@ public class ShapeController : MonoBehaviour
             objectSprite.color = thirdColor;
             objectSprite.sprite = thirdSprite;
         }
+        else if (currentOrder == fourthOrder) 
+        {
+
+            Debug.Log("!!!");
+            objectSprite.color = fourthColor;
+            objectSprite.sprite = fourthSprite;
+        }
+    }
+
+
+    public void Unlocked() {
+        squircleUnlocked = true;
     }
 
 
@@ -284,12 +369,22 @@ public class ShapeController : MonoBehaviour
             objectSprite.sprite = thirdSprite;
             //controller.setLayerMask(collisionsLayers[3]);
         }
-        else if (currentOrder == thirdOrder)
+        else if (currentOrder == thirdOrder && squircleUnlocked)
         {
+            currentOrder = fourthOrder;
+            objectSprite.color = fourthColor;
+            objectSprite.sprite = fourthSprite;
+            //controller.setLayerMask(collisionsLayers[3]);
+        }
+        else if (currentOrder == thirdOrder) {
             currentOrder = firstOrder;
             objectSprite.color = firstColor;
             objectSprite.sprite = firstSprite;
-            //controller.setLayerMask(collisionsLayers[3]);
+        }
+        else if (currentOrder == fourthOrder) {
+            currentOrder = firstOrder;
+            objectSprite.color = firstColor;
+            objectSprite.sprite = firstSprite;
         }
     }
 }

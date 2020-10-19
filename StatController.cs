@@ -46,6 +46,7 @@ public class StatController : MonoBehaviour
 
 
 
+
     public void isKilled()
     {
         if (currentTime >= timeBetweenDeaths)
