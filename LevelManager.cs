@@ -6,6 +6,7 @@ using TMPro;
 using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 
@@ -30,7 +31,10 @@ public class LevelManager : MonoBehaviour
 
     public TextMeshProUGUI deathField;
 
+    public TextMeshProUGUI achievementField;
+
     public Canvas orderMenu;
+
 
 
 
@@ -56,12 +60,11 @@ public class LevelManager : MonoBehaviour
         {
             FadeOut();
             finished = true;
-            timeField.text = "Total Time: " + Convert.ToString(Math.Round(stats.getTotalTime(), 2));
-            deathField.text = "Total Deaths: " + Convert.ToString(stats.getNumberOfDeaths());
+            timeField.text = "time: " + Convert.ToString(Math.Round(stats.getTotalTime(), 2));
+            deathField.text = "deaths: " + Convert.ToString(stats.getNumberOfDeaths());
+            achievementField.text = "achievements: " + Convert.ToString(stats.getAchievementsUnlocked());
             orderMenu.enabled = false;
             SaveGame();
-
-
         }
 
 
@@ -69,24 +72,30 @@ public class LevelManager : MonoBehaviour
 
 
     void SaveGame() {
-        SaveController save = CreateSaveGameObject();
-        BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create("C:/Users/Matthew/Desktop/level" + level + ".allo");
-        bf.Serialize(file, save);
-        file.Close();
+        String levelName = "level" + Convert.ToString(level);
+
+        float time = PlayerPrefs.GetFloat(levelName + "Time");
+        int deaths = PlayerPrefs.GetInt(levelName + "Deaths");
+        int achievements = PlayerPrefs.GetInt(levelName + "A");
+
+        if (stats.getTotalTime() > time) 
+        {
+            PlayerPrefs.SetFloat(levelName + "Time", (float) (Math.Round(stats.getTotalTime(), 2)));
+        }
+        if (stats.getNumberOfDeaths() < deaths) 
+        {
+            PlayerPrefs.SetInt(levelName + "Deaths", stats.getNumberOfDeaths());
+        }
+
+        if (stats.getAchievementsUnlocked() > achievements) 
+        {
+            PlayerPrefs.SetInt(levelName + "A", stats.getAchievementsUnlocked());
+        }
+        PlayerPrefs.Save();
     }
 
 
 
-    private SaveController CreateSaveGameObject() {
-        SaveController save = new SaveController();
-
-        save.deaths = stats.getNumberOfDeaths();
-        save.levelNumber = level;
-        save.totalTime = stats.getTotalTime();
-
-        return save;
-    }
 
 
 
@@ -98,6 +107,18 @@ public class LevelManager : MonoBehaviour
     public void FadeOut()
     {
         animator.SetTrigger("Fade_out");
+    }
+
+
+    public void MenuButton()
+    {
+        SceneManager.LoadScene("LoadMenu");
+    }
+
+    public void ReplayButton()
+    {
+                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
     }
 
 

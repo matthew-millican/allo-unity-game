@@ -18,6 +18,11 @@ public class AchievementController : MonoBehaviour
     float counter;
 
 
+    public StatController stats;
+
+    bool animPlayed = false;
+
+
 
 
     bool isCollected;
@@ -48,10 +53,12 @@ public class AchievementController : MonoBehaviour
     void Die()
     {
 
-        if (counter >= timer)
+        if (counter >= timer && !animPlayed)
         {
             Instantiate (DeathParticles, gameObject.transform.position, Quaternion.identity);
+            stats.unlockAchievement();
             counter = 0;
+            animPlayed = true;
         }
         renderer.sprite = null;
         isCollected = false;

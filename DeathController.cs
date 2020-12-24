@@ -116,7 +116,7 @@ public class DeathController : MonoBehaviour
             Instantiate(DeathParticles, currentPosition.position, Quaternion.identity);
         }
 
-        if (!death.isPlaying) {
+        if (!death.isPlaying && PlayerPrefs.GetInt("playSounds") == 1) {
             death.Play();
         }
 

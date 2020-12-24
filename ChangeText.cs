@@ -12,6 +12,8 @@ public class ChangeText : MonoBehaviour
 
     public TextMeshProUGUI deathField;
 
+    public TextMeshProUGUI achievementField;
+
 
     public StatController statController;
 
@@ -27,6 +29,8 @@ public class ChangeText : MonoBehaviour
 
 
         deathField.text = "Deaths: " + Convert.ToString(statController.getNumberOfDeaths());
+
+        achievementField.text = "Achievements: " + Convert.ToString(statController.getAchievementsUnlocked());
         
     }
 }

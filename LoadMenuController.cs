@@ -14,8 +14,6 @@ public class LoadMenuController : MonoBehaviour
 {
 
 
-    SaveController[] saves = new SaveController[14];
-
 
     public GameObject[] levels;
 
@@ -35,6 +33,8 @@ public class LoadMenuController : MonoBehaviour
     
     public TextMeshProUGUI timeField;
 
+    public TextMeshProUGUI achievementField;
+
 
     public AudioSource backClick;
 
@@ -43,20 +43,16 @@ public class LoadMenuController : MonoBehaviour
     public AudioSource moveLevelClick;
 
 
+
+
+
+
     void Start() {
         currentLevel = 0;
         levels[0].GetComponent<MeshRenderer>().material = red;
-        levelField.text = Convert.ToString("Level " + (currentLevel+1));
+        levelField.text = Convert.ToString("level " + (currentLevel+1));
 
 
-        for (int i = 0; i < saves.Length; i++) {
-            if (File.Exists("C:/Users/Matthew/Desktop/level" + (i+1) + ".allo")) {
-                BinaryFormatter bf = new BinaryFormatter();
-                FileStream file = File.Open("C:/Users/Matthew/Desktop/level" + (i+1) + ".allo", FileMode.Open);
-                saves[i] = (SaveController)bf.Deserialize(file);
-                file.Close();
-        }
-        }
         DisplayText();
 
     }
@@ -67,19 +63,24 @@ public class LoadMenuController : MonoBehaviour
     }
 
 
-
     void DisplayText() {
-        Debug.Log(saves[0].totalTime);
-        timeField.text = "Time: ";
-        deathField.text = "Deaths: ";
+        timeField.text = "time: ";
+        deathField.text = "deaths: ";
+        
+
+        String levelName = "level" + (currentLevel + 1);
+        float time = PlayerPrefs.GetFloat(levelName + "Time");
+        int deaths = PlayerPrefs.GetInt(levelName + "Deaths");
+        int achievements = PlayerPrefs.GetInt(levelName + "A");
 
         if (currentLevel>=5) {
-            timeField.text = "More levels to come in the future!";
-            deathField ="";
+            timeField.text = Convert.ToString("more levels to come in the future!");
+            deathField.text =Convert.ToString("");
         }
         else {
-        timeField.text = "Time: " + Convert.ToString(saves[currentLevel].totalTime);
-        deathField.text = "Deaths: " + Convert.ToString(saves[currentLevel].deaths);
+        timeField.text = "time: " + Convert.ToString(time);
+        deathField.text = "deaths: " + Convert.ToString(deaths);
+        achievementField.text = "achievements: " + Convert.ToString(achievements);
         }
     }
 
@@ -97,7 +98,9 @@ public class LoadMenuController : MonoBehaviour
             levels[currentLevel].GetComponent<MeshRenderer>().material = red;
         }
 
-        moveLevelClick.Play();
+        if (PlayerPrefs.GetInt("playSounds") == 1) {
+            moveLevelClick.Play();
+        }
 
         levelField.text = Convert.ToString("Level " + (currentLevel+1));
 
@@ -120,7 +123,11 @@ public class LoadMenuController : MonoBehaviour
             levels[currentLevel+1].GetComponent<MeshRenderer>().material = white;
             levels[currentLevel].GetComponent<MeshRenderer>().material = red;
         }
-        moveLevelClick.Play();
+       
+        if (PlayerPrefs.GetInt("playSounds") == 1) {
+            moveLevelClick.Play();
+        }
+
 
         levelField.text = Convert.ToString("Level " + (currentLevel + 1));
         DisplayText();
@@ -130,7 +137,10 @@ public class LoadMenuController : MonoBehaviour
 
     public void Back() {
 
-        backClick.Play();
+
+            if (PlayerPrefs.GetInt("playSounds") == 1) {
+            backClick.Play();
+        }
         SceneManager.LoadScene("MainMenu");
 
         
@@ -138,7 +148,11 @@ public class LoadMenuController : MonoBehaviour
     }
 
     public void Play() {
-        playClick.Play();
+
+            if (PlayerPrefs.GetInt("playSounds") == 1) {
+            playClick.Play();
+        }
+
 
         if (currentLevel < 5) {
 

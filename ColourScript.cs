@@ -44,7 +44,10 @@ public class ColourScript : MonoBehaviour
         if (canContinue) {
         if (currentTimer <= 0) {
 
-            change.Play();
+            if (PlayerPrefs.GetInt("playSounds") == 1)
+            {
+                change.Play();
+            }
             if (currentIndex == 1) {
                 currentIndex++;
                 GetComponent<MeshRenderer>().material = SecondMaterial;

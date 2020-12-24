@@ -61,7 +61,11 @@ public class YellowController : MonoBehaviour
 
                 if (!instantiated && currentTimer <= 0) {
                      Instantiate(DeathParticles, transform.position, Quaternion.identity);
-                     audio.Play();
+
+                     if (PlayerPrefs.GetInt("playSounds") == 1)
+                     {
+                         audio.Play();
+                     }
                      instantiated = true;
                      canvasController.active = true;
                      oldController.active = false;

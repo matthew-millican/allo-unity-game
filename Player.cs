@@ -142,7 +142,6 @@ public class Player : MonoBehaviour
         {
             deathControl.Die(gameObject.transform);
         }
-        Debug.Log(control);
         if (control) {
            Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
            int wallDirX = (controller.collisions.left) ? -1 : 1;
@@ -192,7 +191,6 @@ public class Player : MonoBehaviour
 
         getBehaviour(behaviour);
 
-        Debug.Log(behaviour);
 
 
         if ((Input.GetKey(KeyCode.W) && behaviour == 5))
@@ -256,7 +254,7 @@ public class Player : MonoBehaviour
 
         if (behaviour == 3)
            {
-           if (Input.GetKeyDown(KeyCode.D))
+           if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
            {
                if (doubleTapTime > Time.time && lastKeyCode == KeyCode.D)
                {
@@ -269,7 +267,7 @@ public class Player : MonoBehaviour
                }
                lastKeyCode = KeyCode.D;
            }
-           else if (Input.GetKeyDown(KeyCode.A))
+           else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
            {
                if ((doubleTapTime > Time.time && lastKeyCode == KeyCode.A))
                {

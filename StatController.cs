@@ -19,6 +19,8 @@ public class StatController : MonoBehaviour
 
     int numberOfDeaths;
 
+    int achievementsUnlocked = 0;
+
 
     void Start()
     {
@@ -43,6 +45,20 @@ public class StatController : MonoBehaviour
         
         
     }
+
+
+    public int getAchievementsUnlocked() 
+    {
+        return achievementsUnlocked;
+    }
+
+
+
+    public void unlockAchievement()
+    {
+        achievementsUnlocked++;
+    }
+
 
 
 

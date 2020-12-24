@@ -96,6 +96,7 @@ public class ShapeController : MonoBehaviour
 
     bool dead;
 
+
     public bool squircleUnlocked;
     // Start is called before the first frame update
     void Start()
@@ -126,7 +127,7 @@ public class ShapeController : MonoBehaviour
         UpdateSprites();
 
 
-        if (Input.GetKeyDown("e"))
+        if (Input.GetKeyDown("e") && !PauseMenu.isPaused)
         {
             changeSprite();
         }
