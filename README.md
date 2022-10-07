@@ -1,5 +1,5 @@
 # allo
-First Unity Game
+My First Unity Game
 
 This project started over the first lockdown back in the summer of 2020.
 
