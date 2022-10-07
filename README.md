@@ -29,6 +29,8 @@ I think this project represents the messy creative excitement that I can sometim
 I've thought a lot about going back and making the game from scratch, so I can do it properly. 
 If you play the game, you'll slowly realise it breaks down in some parts, the velocities of moving platforms become so out of sync with each other it's actually impossibleto progress through the level.
 
+May that day yet come.
+
 I've learned a lot of things from this project - the biggest lesson? commit your damn code.
 
 
