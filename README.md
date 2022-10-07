@@ -27,8 +27,7 @@ even the physics of light. The level chooser is meant to represent an emission l
 I think this project represents the messy creative excitement that I can sometimes have about a project. So messy in fact, the finished code doesn't even exist anymore.
 
 I've thought a lot about going back and making the game from scratch, so I can do it properly. 
-If you play the game, you'll slowly realise it breaks down in some parts, platform velocities become so out of sync with each other, it's actually impossible
-to progress through the level.
+If you play the game, you'll slowly realise it breaks down in some parts, the velocities of moving platforms become so out of sync with each other it's actually impossibleto progress through the level.
 
 I've learned a lot of things from this project - the biggest lesson? commit your damn code.
 
